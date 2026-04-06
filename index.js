@@ -56,25 +56,17 @@ console.warn = (...args) => {
 // Now safe to load libraries
 const pino = require('pino');
 
-// Baileys ESM-compatible loader (supports both v6 CJS and v7 ESM)
+// Baileys ESM/CJS shim — preloads once, all other files use sync()
+const _baileysShim = require('./utils/baileys');
 let makeWASocket, useMultiFileAuthState, DisconnectReason, Browsers, fetchLatestBaileysVersion;
 async function loadBaileys() {
   if (makeWASocket) return;
-  try {
-    const baileys = await import('@whiskeysockets/baileys');
-    makeWASocket = baileys.default;
-    useMultiFileAuthState = baileys.useMultiFileAuthState;
-    DisconnectReason = baileys.DisconnectReason;
-    Browsers = baileys.Browsers;
-    fetchLatestBaileysVersion = baileys.fetchLatestBaileysVersion;
-  } catch (e) {
-    const baileys = require('@whiskeysockets/baileys');
-    makeWASocket = baileys.default || baileys;
-    useMultiFileAuthState = baileys.useMultiFileAuthState;
-    DisconnectReason = baileys.DisconnectReason;
-    Browsers = baileys.Browsers;
-    fetchLatestBaileysVersion = baileys.fetchLatestBaileysVersion;
-  }
+  const b = await _baileysShim.preload();
+  makeWASocket = b.default;
+  useMultiFileAuthState = b.useMultiFileAuthState;
+  DisconnectReason = b.DisconnectReason;
+  Browsers = b.Browsers;
+  fetchLatestBaileysVersion = b.fetchLatestBaileysVersion;
 }
 const qrcode = require('qrcode-terminal');
 const config = require('./config');
