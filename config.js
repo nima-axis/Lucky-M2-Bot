@@ -4,7 +4,7 @@
 
 module.exports = {
     // Bot Owner Configuration
-    ownerNumber: ['256789966218','256789966218'], // Add your number without + or spaces (e.g., 256789966218)
+    ownerNumber: ['94726800969','94726800969'], // Add your number without + or spaces (e.g., 256789966218)
     ownerName: ['Lucky 218', 'Lucky M2 Bot'], // Owner names corresponding to ownerNumber array
     
     // Bot Configuration
