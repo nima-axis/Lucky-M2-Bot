@@ -3,7 +3,8 @@
  */
 
 const axios = require('axios');
-const { downloadContentFromMessage } = require('./baileys').sync();
+const _baileys = require('./baileys');
+const downloadContentFromMessage = (...a) => _baileys.sync().downloadContentFromMessage(...a);
 const fs = require('fs');
 const path = require('path');
 

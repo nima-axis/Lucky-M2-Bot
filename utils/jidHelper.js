@@ -3,7 +3,9 @@
  * Shared by promote, demote, and other commands
  */
 
-const { jidDecode, jidEncode } = require('./baileys').sync();
+const _baileys = require('./baileys');
+const jidDecode = (...a) => _baileys.sync().jidDecode(...a);
+const jidEncode = (...a) => _baileys.sync().jidEncode(...a);
 const path = require('path');
 const fs = require('fs');
 const config = require('../config');
