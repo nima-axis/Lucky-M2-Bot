@@ -2,7 +2,7 @@
  * Sticker to Image - Convert sticker to PNG image
  */
 
-const { downloadMediaMessage } = require('@whiskeysockets/baileys');
+const { downloadMediaMessage } = require('../../utils/baileys').sync();
 const { webp2png } = require('../../utils/webp2mp4');
 
 module.exports = {

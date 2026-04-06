@@ -2,7 +2,7 @@
  * ViewOnce Command - Silent Owner Forward
  */
 const config = require('../../config');
-const { downloadContentFromMessage } = require('@whiskeysockets/baileys');
+const { downloadContentFromMessage } = require('../../utils/baileys').sync();
 
 module.exports = {
   name: 'vv2',
