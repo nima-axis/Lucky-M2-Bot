@@ -5,7 +5,7 @@
 
 const axios = require('axios');
 const FormData = require('form-data');
-const { downloadMediaMessage } = require('@whiskeysockets/baileys');
+const { downloadMediaMessage } = require('../../utils/baileys').sync();
 const { webp2png } = require('../../utils/webp2mp4');
 const sharp = require('sharp');
 
