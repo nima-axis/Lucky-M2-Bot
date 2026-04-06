@@ -55,13 +55,27 @@ console.warn = (...args) => {
 
 // Now safe to load libraries
 const pino = require('pino');
-const {
-  default: makeWASocket,
-  useMultiFileAuthState,
-  DisconnectReason,
-  Browsers,
-  fetchLatestBaileysVersion
-} = require('@whiskeysockets/baileys');
+
+// Baileys ESM-compatible loader (supports both v6 CJS and v7 ESM)
+let makeWASocket, useMultiFileAuthState, DisconnectReason, Browsers, fetchLatestBaileysVersion;
+async function loadBaileys() {
+  if (makeWASocket) return;
+  try {
+    const baileys = await import('@whiskeysockets/baileys');
+    makeWASocket = baileys.default;
+    useMultiFileAuthState = baileys.useMultiFileAuthState;
+    DisconnectReason = baileys.DisconnectReason;
+    Browsers = baileys.Browsers;
+    fetchLatestBaileysVersion = baileys.fetchLatestBaileysVersion;
+  } catch (e) {
+    const baileys = require('@whiskeysockets/baileys');
+    makeWASocket = baileys.default || baileys;
+    useMultiFileAuthState = baileys.useMultiFileAuthState;
+    DisconnectReason = baileys.DisconnectReason;
+    Browsers = baileys.Browsers;
+    fetchLatestBaileysVersion = baileys.fetchLatestBaileysVersion;
+  }
+}
 const qrcode = require('qrcode-terminal');
 const config = require('./config');
 const handler = require('./handler');
@@ -190,6 +204,7 @@ const createSuppressedLogger = (level = 'silent') => {
 
 // Main connection function
 async function startBot() {
+  await loadBaileys();
   const sessionFolder = `./${config.sessionName}`;
   const sessionFile = path.join(sessionFolder, 'creds.json');
 
